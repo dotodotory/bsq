@@ -6,7 +6,7 @@
 /*   By: jiykim <jiykim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 19:56:29 by jiykim            #+#    #+#             */
-/*   Updated: 2020/11/01 23:04:34 by jiykim           ###   ########.fr       */
+/*   Updated: 2020/11/02 01:20:33 by jiykim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,32 @@ int	ft_read_file(int fd, char *buf)
 	count = 0;
 	while (0 < (rd_size = read(fd, buf, BUFF_SIZE)))
 	{
+		buf_i = 0;
 		while (buf_i < rd_size)
 		{
 			tmp = buf;
 			while (*buf != '\n')
+			{
 				buf++;
-			if (flag++ == 0)
+				buf_i++;
+			}
+			if (flag == 0)
 			{
 				first = (char *)malloc(sizeof(char) * (buf - tmp + 1));
 				first = ft_strncpy(first, tmp, buf - tmp);
 				if (!ft_first_line(first))
 					return (0);
 			}
-			buf_i = 0;
 			if (flag == 1 && *buf == '\n')
 				g_col = buf-tmp;
-			if (flag++ >= 1 && *buf == '\n')
+			if (flag >= 1 && *buf == '\n')
 			{
 				printf("ifas\n");
 				if ((buf - tmp) != g_col)//no
 					return (-1);
 				count++;
 			}
+			flag++;
 			buf_i++;
 		}
 	}
